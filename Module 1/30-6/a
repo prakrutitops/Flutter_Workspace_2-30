@@ -1,1 +1,21 @@
 
+Function: Functional will use to reuse the code
+
+types of functions:
+1)Inbuilt
+2)User-defined
+  i)with para with return type
+ ii)with para without return type
+iii)with return type and without para
+iv)without para without return type
+
+
+parameters:
+optional->[]
+named->{}
+
+constructor:
+default
+parameterized
+named 
+
