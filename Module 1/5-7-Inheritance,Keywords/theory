@@ -1,0 +1,26 @@
+Inheritance: When one object acquire all the properties and behvaiour parent class
+
+Types of Inheritance:
+1)Single
+2)Multilevel
+3)Multiple => 
+4)Hierarchical
+5)Hybrid
+-----------------Java---------------------------
+Interface : Collection of abstract methods
+Abstract Method :Without Body Part
+-----------------Java----------------------------
+Abstract Class : abstract method ,non abstract 
+
+
+parent - child
+super -sub
+base - derived
+
+
+Keywords:
+this
+static
+super
+final
+
