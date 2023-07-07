@@ -1,0 +1,62 @@
+Polymorphism:Many Ways to perform anything
+=>Not Supported in Dart
+1)Method Overloading:when two or more methods having a same name 
+but number of parameters are diffrent
+
+
+cal(int a,int b)
+{
+	return a+b;
+}
+cal(int a,int b,int c)
+{
+	return a*b*c;
+}
+
+main()
+{
+	print(cal(5,2,3));
+}
+
+2)Method Overriding:when two or more methods having a same name 
+and number of parameters are also same
+
+
+Loop->
+
+Left To Right:
+*
+**
+***
+****
+*****
+
+1
+12
+123
+1234
+12345
+
+1
+22
+333
+4444
+55555
+
+Right to Left:
+
+    *
+   **
+  ***
+ ****
+*****
+
+
+
+
+
+
+
+
+
+
