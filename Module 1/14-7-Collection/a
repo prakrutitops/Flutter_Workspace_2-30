@@ -1,1 +1,23 @@
+Collection: 
+
+List->Interface
+1)fixed list-5-3,2
+2)growable list
+ArrayList -> Data Store Array Index
+LinkedList
+1)Singly->Single Side work
+2)Doubly->First and Last
+
+Set->Interface
+->groawable Set
+1)HashSet
+2)LinkedHashset
+
+Map
+HashMap
+
+Queue
+
+Async and Await
+
 
