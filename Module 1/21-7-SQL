@@ -1,0 +1,76 @@
+WAMP
+W=>Windows[OS]
+A=>Apache[Server]
+M=>Mysql[Database]
+P=>Phpmyadmin
+
+LAMP
+L=>linux[OS]
+A=>Apache[Server]
+M=>Mysql[Database]
+P=>Phpmyadmin
+
+MAMP
+M=>Mac[OS]
+A=>Apache[Server]
+M=>Mysql[Database]
+P=>Phpmyadmin
+===============================
+XAMPP
+X=>Cross Platform
+A=>Apache[Server]
+M=>Mysql[Database]
+P=>Perl
+P=>Phpmyadmin
+==============================
+
+
+Database Creation
+Table Creation
+
+Constraint Key:
+1)Primary -> avoid data duplication
+-> i can only assign one time in one table
+-> can not accept null values
+
+2)Unique -> uniquely data identify
+->i can assign multiple time in one table
+->can accept null value
+
+
+3)Foreign ->Refrence pass on[Index]
+-> JOIN
+
+
+Crud operations => Insert,View,Update,Delete
+
+Query -> 
+
+Types of Commnads in MYSQL
+
+1)DDL =>data definition language
+-> create,alter,drop,truncate,rename
+
+2)DML =>data manipulation language
+-> insert,update,delete
+
+3)DQL =>data query language
+-> select
+
+4)DCL =>data control language
+-> rollback,commit
+
+Joins
+
+Procedure
+Trigger
+
+SQL=>Structured query language
+MYSQL=>database
+Oracle
+Apache
+MS SQL
+
+
+
+
