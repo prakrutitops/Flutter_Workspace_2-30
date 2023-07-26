@@ -1,0 +1,93 @@
+DQL:data query language
+select
+
+* -> asterik -> all fields
+
+select all
+select row
+select column
+select order-asc,desc
+
+Functions:
+
+Agreegate Functions
+1)MAX->Select MAX(salary) from tablename;
+2)MIN
+3)SUM
+4)AVG
+5)COUNT
+6)FIRST-> SELECT * FROM signup LIMIT 1;
+7)LAST -> SELECT * FROM signup order by id DESC LIMIT 1;
+
+
+Scalar Functions:
+1)UCASE-> SELECT UCASE(name) FROM signup
+2)LCASE
+3)MID->SELECT MID(name,1,4) FROM signup
+4)ROUND->SELECT ROUND(MARKS,0) FROM table_name; 
+5)FORMAT->SELECT NAME, FORMAT(Now(),'YYYY-MM-DD') AS Date FROM
+Students; 
+6)LEN-> SELECT LENGTH(NAME) FROM Stuents; 
+7)NOW->SELECT NAME, NOW() AS DateTime FROM Students;
+
+select * from tablename where name LIKE='%A'
+
+DCL:
+rollback
+commit
+
+-------------------------------------------------------
+VIEW-> CREATE VIEW mydoctorview As SELECT Dr_Name,Location,Speciality FROM doctors
+
+Procedure->may have a return type
+Functions->compulsory having a return type
+
+Procedure:
+
+DELIMITER //
+CREATE PROCEDURE updateproc(INOUT myid int)
+BEGIN
+UPDATE  signup set name='dharmik' WHERE id =myid;
+END //
+DELIMITER ;
+
+Trigger:
+
+BEFORE INSERT
+AFTER INSERT
+BEFORE UPDATE
+AFTER UPDATE
+BEFORE DELETE
+AFTER DELETE
+
+DELIMITER $$
+
+CREATE TRIGGER inserttrigger BEFORE INSERT ON subscribers FOR EACH ROW 
+BEGIN
+
+	INSERT INTO audit_subscribers SET action_performed='INSERTED A NEW SUBSCRIBER',
+    subscriber_name = new.fname;
+
+END $$
+
+DELIMITER ;
+
+
+JOIN:
+INNER JOIN->SELECT * FROM location JOIN signup on location.id = signup.id
+LEFT JOIN->SELECT * FROM location LEFT JOIN signup on location.id = signup.id
+RIGHT JOIN->SELECT * FROM location RIGHT JOIN signup on location.id = signup.id
+FULL JOIN->
+SELECT * FROM location LEFT JOIN signup on location.id = signup.id
+UNION
+SELECT * FROM location RIGHT JOIN signup on location.id = signup.id
+
+
+
+
+
+
+
+
+
+
