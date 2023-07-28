@@ -1,0 +1,21 @@
+SDK ->software development kit
+AVD -> Android Virtual Device
+
+emulator -> andorid phone->windows
+simulator-> iphone->Mac
+============================================
+android->platform specific code for android
+ios->platform specific code for ios
+lib->common code
+pubspec.yaml->external dependencies
+============================================
+widget: everything in flutter is a one widget
+
+Stateful->mutable
+Stateless->immutable
+
+immutable -> can not change
+mutable ->can changes
+-------------------------------------------------
+MaterialApp
+Scaffold
