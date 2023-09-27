@@ -1,52 +1,51 @@
 //@dart=2.9
-import 'dart:convert';
 
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
-
-
 void main()
 {
-  runApp(MaterialApp(home:MyApp()));
+  runApp(MaterialApp(home:MyView()));
 }
 
-class MyApp extends StatefulWidget
+class MyView extends StatefulWidget
 {
   @override
-  ViewState createState() => ViewState();
+  MYViewState createState() => MYViewState();
 
 }
 
-class ViewState extends State<MyApp>
+class MYViewState extends State<MyView>
 {
   @override
   Widget build(BuildContext context)
   {
-      return Scaffold(
 
-          appBar: AppBar(title: Text("Json Parsing"),),
-        body: FutureBuilder<List>(
-            future: getdetail(),
-            builder:(ctx,ss){
+    return Scaffold(
 
-              if(ss.hasData)//0000000000000
-              {
+      appBar: AppBar(title: Text("View Details"),),
+      body: FutureBuilder<List>(
+          future: getdetail(),
+          builder:(ctx,ss){
 
-                return Item(list:ss.data);
+            if(ss.hasData)
+            {
 
-              }
-              if(ss.hasError)
-              {
-                print('Network Not Found');
-              }
+              return Items(list:ss.data);
 
-              return CircularProgressIndicator();
+            }
+            if(ss.hasError)
+            {
+              print('Network Not Found');
+            }
+
+            return CircularProgressIndicator();
 
 
 
-            }),
-      );
+          }),
+    );
 
 
   }
@@ -58,27 +57,32 @@ class ViewState extends State<MyApp>
   }
 
 }
-class Item extends StatelessWidget {
 
+class Items extends StatelessWidget
+{
   List list;
-
-  Item({this.list});
+  Items({this.list});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context)
+  {
     return ListView.builder(
 
-        itemCount: list == null ? 0 : list.length,
-        itemBuilder: (ctx, i) {
-          ListTile(
+        itemCount: list==null?0:list.length,
+        itemBuilder: (ctx,i)
+        {
 
-            title: Text(list[i]['name']),
-            subtitle: Text(list[i]['email']),
+          return ListTile(
+
+              title: Text(list[i]['name']),
+              subtitle: Text(list[i]['email']),
 
           );
+
         }
 
 
     );
   }
+
 }
