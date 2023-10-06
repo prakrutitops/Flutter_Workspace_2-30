@@ -1,79 +1,73 @@
-//@dart=2.9
+import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:url_launcher/url_launcher.dart';
+import 'package:image_picker/image_picker.dart';
 
-
-void main()
-{
-  runApp(MyApp());
+void main() {
+runApp(new MyApp());
 }
 
-
-class MyApp extends StatelessWidget
-{
-  @override
-  Widget build(BuildContext context)
-  {
-    return MaterialApp(home: FirstPage());
-  }
-
-
+class MyApp extends StatelessWidget {
+@override
+Widget build(BuildContext context) {
+	return new MaterialApp(
+	home: new GalleryAccess(),
+	debugShowCheckedModeBanner: false,
+	);
+}
 }
 
-class FirstPage extends StatelessWidget
-{
-  @override
-  Widget build(BuildContext context)
-  {
-      return Scaffold(appBar: AppBar(title: Text("Tops Technologies"),),
-      body: Center
-        (
-          // 1. Write Some Code Text
-          //child:
-          //child: Text("Welcome to tops"),
-          child: Column(
+class GalleryAccess extends StatefulWidget {
+@override
+State<StatefulWidget> createState() {
+	return new GalleryAccessState();
+}
+}
 
-            children:
-            [
+class GalleryAccessState extends State<GalleryAccess> {
+File galleryFile;
 
-              Image.network("https://vyasprakruti.000webhostapp.com/FlutterImages/tops.jpg",width: 250,height: 250),
+@override
+Widget build(BuildContext context) {
+	//display image selected from gallery
+	imageSelectorGallery() async {
+	galleryFile = await ImagePicker.pickImage(
+		source: ImageSource.gallery,
+		// maxHeight: 50.0,
+		// maxWidth: 50.0,
+	);
+	setState(() {});
+	}
 
-            SizedBox(width: 100,height: 100),
-
-            ElevatedButton(
-                      child: Text("Tops Technologies"),
-                      onPressed: ()
-                      {
-
-                          websitelaunch();
-
-                      },
-                      ),
-                  ],
-                ),
-              )
-        );
-
-
-
-
-
-
-
-
-  }
-
-  void websitelaunch() async
-  {
-    var url = Uri.parse("https://www.tops-int.com");
-    if (await canLaunchUrl(url))
-    {
-      await launchUrl(url);
-    }
-    else
-    {
-      throw 'Could not launch $url';
-    }
-  }
-
+	return new Scaffold(
+	appBar: new AppBar(
+		title: new Text('Gallery Access'),
+		backgroundColor: Colors.green,
+		actions: <Widget>[
+		Text("GFG",textScaleFactor: 3,)
+		],
+	),
+	body: new Builder(
+		builder: (BuildContext context) {
+		return Center(
+			child: new Column(
+			mainAxisAlignment: MainAxisAlignment.center,
+			children: <Widget>[
+				new RaisedButton(
+				child: new Text('Select Image from Gallery'),
+				onPressed: imageSelectorGallery,
+				),
+				SizedBox(
+				height: 200.0,
+				width: 300.0,
+				child: galleryFile == null
+					? Center(child: new Text('Sorry nothing selected!!'))
+					: Center(child: new Image.file(galleryFile)),
+				)
+			],
+			),
+		);
+		},
+	),
+	);
+}
 }
