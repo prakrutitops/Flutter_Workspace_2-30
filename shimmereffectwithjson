@@ -1,0 +1,267 @@
+import 'package:flutter/material.dart';
+import 'package:shimmar_effect/insertData.dart';
+
+
+void main()
+{
+  runApp(MaterialApp(
+      home: AddData(),
+      debugShowCheckedModeBanner: false));
+}
+
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:shimmar_effect/viewData.dart';
+import 'package:http/http.dart' as http;
+
+
+class AddData extends StatefulWidget
+{
+  @override
+  AddState createState() => AddState();
+
+}
+
+class AddState extends State<AddData>
+{
+
+  TextEditingController name = TextEditingController();
+  TextEditingController email = TextEditingController();
+  TextEditingController password = TextEditingController();
+
+
+  @override
+  Widget build(BuildContext context)
+  {
+    return Scaffold(
+
+      appBar: AppBar(title: Text("Student Details"),),
+      body: ListView(
+
+          children: [
+
+            TextField(
+              controller: name ,
+              decoration: InputDecoration(hintText: "Enter Your Name",labelText: "Enter Your Name"),
+            ),
+
+            TextField(
+              controller: email,
+              decoration: InputDecoration(hintText: "Enter Your Email",labelText: "Enter Your Email"),
+            ),
+
+            TextField(
+              controller: password ,
+              decoration: InputDecoration(hintText: "Enter Your Password",labelText: "Enter Your Password"),
+            ),
+
+            ElevatedButton(onPressed: ()
+            {
+
+              //insertdata();
+              var url=Uri.parse("https://begrimed-executions.000webhostapp.com/Shimmar/insertData.php");
+              http.post(url,
+
+                  body:
+                  {
+
+                    "name":name.text.toString(),
+                    "email":email.text.toString(),
+                    "password":password.text.toString(),
+
+
+                  }
+
+              );
+
+              print('Inserted');
+
+
+            }, child: Text("Submit")),
+
+
+            ElevatedButton(onPressed: (){
+
+              Navigator.push(context, MaterialPageRoute(builder: (context) => MyView()));
+
+            }, child: Text("View Data"))
+
+          ]
+      ),
+    );
+  }
+
+}
+
+import 'dart:convert';
+import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'package:shimmer/shimmer.dart';
+
+
+void main()
+{
+  runApp(MaterialApp(home:MyView()));
+}
+
+class MyView extends StatefulWidget
+{
+  @override
+  MYViewState createState() => MYViewState();
+
+}
+
+class MYViewState extends State<MyView>
+{
+  bool _enabled = true;
+
+  @override
+  Widget build(BuildContext context)
+  {
+
+    return Scaffold(
+
+      appBar: AppBar(title: Text("Shimmer Effect"),),
+      body: FutureBuilder<List>(
+          future: getdetail(),
+          builder:(ctx,ss){
+
+            if(ss.hasData)
+            {
+
+              return Items(list:ss.data!);
+
+            }
+            if(ss.hasError)
+            {
+              print('Network Not Found');
+            }
+
+            return Center(
+              child: Column(
+                children: [
+                  Expanded(
+                      child: Shimmer.fromColors(
+                      baseColor: Colors.grey,
+                          highlightColor: Colors.red,
+                        child: ListView.builder(
+                            itemCount: 5,
+                            itemBuilder: (ctx,i) {
+                           return Padding(
+                            padding: const EdgeInsets.all(20),
+                            child: Row
+                              (
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Container(
+                                  width: 50,
+                                  height: 16,
+                                  color: Colors.white,
+                                ),
+
+                             Expanded(
+                               child: Column(
+                                 crossAxisAlignment: CrossAxisAlignment.start,
+                                 children: [
+                                   Container(
+                                     width: 300,
+                                     height: 16,
+                                     color: Colors.white,
+                                   ),
+                                   SizedBox(height: 8),
+                                   Container(
+                                     width: 300,
+                                     height: 16,
+                                     color: Colors.white,
+                                   ),
+                                 ],
+                               ),
+                             ),
+
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      vertical: 8.0),
+                                  child: TextButton(
+                                      onPressed: () {
+                                        setState(() {
+                                          _enabled = !_enabled;
+                                        });
+                                      },
+
+                                      child: Text
+                                        (
+                                        _enabled ? 'Stop' : 'Play', style: TextStyle(color: Colors.black),
+
+                                      ),
+                                ),
+                                ),
+                              ],
+
+
+                            ),
+                          );
+                        }
+
+                        ),
+                        ),
+                        ),
+                ],
+              ),
+            );
+
+
+
+          }),
+    );
+
+
+  }
+
+  Future<List>getdetail()async
+  {
+    var response = await http.get(Uri.parse("https://begrimed-executions.000webhostapp.com/Shimmar/viewData.php"));
+    return jsonDecode(response.body);
+  }
+
+}
+
+class Items extends StatelessWidget
+{
+  List list;
+  Items({required this.list});
+
+  @override
+  Widget build(BuildContext context)
+  {
+
+    return ListView.separated(
+
+      itemCount: list==null?0:list.length,
+      itemBuilder: (ctx,i)
+      {
+
+        return ListTile(
+
+
+            title: Text(list[i]['name']),
+            subtitle: Column(
+              children: [
+                Text(list[i]['email']),
+                Text(list[i]['password']),
+              ],
+            )
+
+            // onTap: ()=>Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context)=>Details(list:list,index:i)
+            // ))
+        );
+
+      }, separatorBuilder: (BuildContext context, int index)
+    {
+      return Divider(height: 4,thickness: 2,);
+    },
+
+
+    );
+  }
+
+}
