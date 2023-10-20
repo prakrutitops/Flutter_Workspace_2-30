@@ -1,47 +1,111 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'add.dart';
-import 'edit.dart';
+
+import 'constraints.dart/textfield.dart';
 
 
-class HomePage extends StatefulWidget
+class AddPage extends StatefulWidget
 {
-  const HomePage({Key? key}) : super(key: key);
+  const AddPage({Key? key}) : super(key: key);
 
   @override
-
-  State<HomePage> createState() => _HomePageState();
+  State<AddPage> createState() => _AddPageState();
 }
 
-class _HomePageState extends State<HomePage> {
- 
+class _AddPageState extends State<AddPage> {
+  //form key
+  final _formkey = GlobalKey<FormState>();
+  // text for textfield
+  String email = '';
+  String name = '';
+  String password = '';
+  // textfield
+  final nameController = TextEditingController();
+  final emailController = TextEditingController();
+  final passwordController = TextEditingController();
+  //Clearing Text
+  _clearText() {
+    nameController.clear();
+    emailController.clear();
+    passwordController.clear();
+  }
+
+  //Resigtering Users
+  CollectionReference addUser =
+      FirebaseFirestore.instance.collection('Students');
+  Future<void> _registerUser() {
+    return addUser
+        .add({'Name': name, 'Email': email, 'Password': password})
+        .then((value) => print('User Added'))
+        .catchError((_) => print('Something Error In registering User'));
+  }
+
+  //Disposing Textfield
+  @override
+  void dispose() {
+    nameController.dispose();
+    emailController.dispose();
+    passwordController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-            appBar: AppBar(
-              title: Text('Crud Operation'.toUpperCase()),
-              actions: [
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: ElevatedButton(
-                    style: ButtonStyle(
-                      backgroundColor: MaterialStateProperty.all(Colors.amber),
-                    ),
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const AddPage(),
-                        ),
-                      );
-                    },
-                    child: const Text('Add'),
+      appBar: AppBar(
+        title: const Text('Add'),
+      ),
+      body: Form(
+        key: _formkey,
+        child: ListView(
+          children: [
+            CustomTextEditField(
+              controller: nameController,
+              labettxt: 'Name',
+            ),
+            CustomTextEditField(
+              controller: emailController,
+              labettxt: 'Email',
+              valid: true,
+            ),
+            CustomTextEditField(
+              controller: passwordController,
+              labettxt: 'Password',
+              visibility: true,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                ElevatedButton(
+                  onPressed: () {
+                    if (_formkey.currentState!.validate()) {
+                      setState(() {
+                        name = nameController.text;
+                        email = emailController.text;
+                        password = passwordController.text;
+                        _registerUser();
+                        _clearText();
+                        Navigator.pop(context);
+                      });
+                    }
+                  },
+                  style: ButtonStyle(
+                    backgroundColor: MaterialStateProperty.all(Colors.green),
                   ),
-                )
+                  child: const Text('Register'),
+                ),
+                ElevatedButton(
+                  onPressed: _clearText,
+                  style: ButtonStyle(
+                    backgroundColor: MaterialStateProperty.all(Colors.red),
+                  ),
+                  child: const Text('Clear'),
+                ),
               ],
             ),
-            body: Container(
-             );
+          ],
+        ),
+      ),
+    );
   }
 }
-
