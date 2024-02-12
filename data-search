@@ -1,0 +1,119 @@
+import 'dart:convert';
+
+import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+
+void main() {
+  runApp(MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'Flutter JSON ListView Example',
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+        visualDensity: VisualDensity.adaptivePlatformDensity,
+      ),
+      home: JsonListView(),
+    );
+  }
+}
+
+class JsonListView extends StatefulWidget {
+  @override
+  _JsonListViewState createState() => _JsonListViewState();
+}
+
+class _JsonListViewState extends State<JsonListView> {
+  List<dynamic> _data = [];
+  List<dynamic> _filteredData = [];
+
+  TextEditingController _controller = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    fetchData();
+  }
+
+  Future<void> fetchData() async {
+    final response = await http.get(Uri.parse('YOUR_API_URL_HERE'));
+
+    if (response.statusCode == 200) {
+      setState(() {
+        _data = json.decode(response.body);
+        _filteredData = _data;
+      });
+    } else {
+      throw Exception('Failed to load data');
+    }
+  }
+
+  void filterSearchResults(String query) {
+    List<dynamic> dummySearchList = [];
+    dummySearchList.addAll(_data);
+    if (query.isNotEmpty) {
+      List<dynamic> dummyListData = [];
+      dummySearchList.forEach((item) {
+        if (item['title'].toLowerCase().contains(query.toLowerCase())) {
+          dummyListData.add(item);
+        }
+      });
+      setState(() {
+        _filteredData = [];
+        _filteredData.addAll(dummyListData);
+      });
+      return;
+    } else {
+      setState(() {
+        _filteredData = [];
+        _filteredData.addAll(_data);
+      });
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('JSON ListView Example'),
+      ),
+      body: Column(
+        children: [
+          Padding(
+            padding: EdgeInsets.all(8.0),
+            child: TextField(
+              controller: _controller,
+              onChanged: filterSearchResults,
+              decoration: InputDecoration(
+                labelText: 'Search',
+                hintText: 'Search',
+                prefixIcon: Icon(Icons.search),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.all(Radius.circular(25.0)),
+                ),
+              ),
+            ),
+          ),
+          Expanded(
+            child: _filteredData.isEmpty
+                ? Center(
+                    child: CircularProgressIndicator(),
+                  )
+                : ListView.builder(
+                    itemCount: _filteredData.length,
+                    itemBuilder: (context, index) {
+                      return ListTile(
+                        title: Text(_filteredData[index]['title']),
+                        // Add any additional fields you want to display here
+                      );
+                    },
+                  ),
+          ),
+        ],
+      ),
+    );
+  }
+}
